@@ -2,15 +2,7 @@ import { useState } from 'react';
 import reactLogo from '@src/assets/react.svg';
 import viteLogo from '/vite.svg';
 import '@src/App.scss';
-
-interface IComponent {
-    name: string;
-}
-
-const Component = (props: IComponent) => {
-    const { name } = props;
-    return <h1>Hello {name}</h1>;
-};
+import { clsx } from 'clsx';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -25,8 +17,7 @@ function App() {
                     <img src={reactLogo} className='logo react' alt='React logo' />
                 </a>
             </div>
-            <Component name='World' />
-            <h1>Vite + React</h1>
+            <h1 className={clsx('header', 'header-italic')}>Vite + React</h1>
             <div className='card'>
                 <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
                 <p>
