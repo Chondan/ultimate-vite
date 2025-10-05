@@ -1,7 +1,27 @@
 
 # Redux Usage Guide
 
-## 1. How to Create a Slice
+## 1. How to Connect to the Store
+
+- Import your slice reducer and API into the store (e.g., `src/redux/store/index.ts`).
+- Example:
+
+```typescript
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from '../slices/counterSlice';
+import { todoApi } from '../api/todoApi';
+
+export const store = configureStore({
+	reducer: {
+		counter: counterReducer,
+		[todoApi.reducerPath]: todoApi.reducer,
+	},
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware().concat(todoApi.middleware),
+});
+```
+
+## 2. How to Create a Slice
 
 - Create your slice file inside the `/slices` folder (e.g., `src/redux/slices/counterSlice.ts`).
 - Example:
@@ -29,7 +49,7 @@ export const { increment, decrement, setValue } = counterSlice.actions;
 export default counterSlice.reducer;
 ```
 
-## 2. How to Create an API (RTK Query)
+## 3. How to Create an API (RTK Query)
 
 - Create your API file inside the `/api` folder (e.g., `src/redux/api/todoApi.ts`).
 - Example:
@@ -49,29 +69,6 @@ export const todoApi = createApi({
 
 export const { useGetTodoQuery } = todoApi;
 ```
-
-## 3. How to Connect to the Store
-
-- Import your slice reducer and API into the store (e.g., `src/redux/store/index.ts`).
-- Example:
-
-```typescript
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../slices/counterSlice';
-import { todoApi } from '../api/todoApi';
-
-export const store = configureStore({
-	reducer: {
-		counter: counterReducer,
-		[todoApi.reducerPath]: todoApi.reducer,
-	},
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(todoApi.middleware),
-});
-```
-
----
-
 
 ---
 
