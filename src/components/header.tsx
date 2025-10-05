@@ -1,12 +1,13 @@
 /* eslint-disable max-len */
 import { Link } from 'react-router-dom';
 import { Logo } from '@/components/logo';
-import { Menu, X } from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import React from 'react';
 import { cn } from '@/lib/utils';
 import { useScroll } from 'motion/react';
 import { ModeToggle } from './mode-toggle';
+import { useEffect, useState } from 'react';
+import { useAuth } from '@/context/auth';
 
 const menuItems = [
     { name: 'Features', href: '#link' },
@@ -16,12 +17,13 @@ const menuItems = [
 ];
 
 export const HeroHeader = () => {
-    const [menuState, setMenuState] = React.useState(false);
-    const [scrolled, setScrolled] = React.useState(false);
+    const { currentUser, logout } = useAuth();
+    const [menuState, setMenuState] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
     const { scrollYProgress } = useScroll();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const unsubscribe = scrollYProgress.on('change', (latest) => {
             setScrolled(latest > 0.05);
         });
@@ -86,16 +88,31 @@ export const HeroHeader = () => {
                             </div>
                             <div className='flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit item-center'>
                                 <ModeToggle />
-                                <Button asChild variant='outline' size='sm'>
-                                    <Link to='#'>
-                                        <span>Login</span>
-                                    </Link>
-                                </Button>
-                                <Button asChild size='sm'>
-                                    <Link to='#'>
-                                        <span>Sign Up</span>
-                                    </Link>
-                                </Button>
+                                {currentUser ? (
+                                    <>
+                                        <Button asChild variant='outline' size='sm'>
+                                            <Link to='/app'>
+                                                <span>Workspace</span>
+                                            </Link>
+                                        </Button>
+                                        <Button className='cursor-pointer' variant='destructive' size='sm' onClick={logout}>
+                                            <LogOut />
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Button asChild variant='outline' size='sm'>
+                                            <Link to='/login'>
+                                                <span>Login</span>
+                                            </Link>
+                                        </Button>
+                                        <Button asChild size='sm'>
+                                            <Link to='/signup'>
+                                                <span>Sign Up</span>
+                                            </Link>
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
