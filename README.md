@@ -1,4 +1,57 @@
-# React + TypeScript + Vite
+# Ultimate Vite React Boilerplate
+
+## Project Features & Setup
+
+This project includes:
+
+- **Vite + React + TypeScript**: Fast development and build setup
+- **ESLint (Flat Config)**: Modern linting with recommended rules for JS, React, TypeScript, and Prettier integration
+- **Prettier**: Automatic code formatting
+- **React Router**: Client-side routing with example Home/About pages
+- **Storybook**: UI component development and documentation
+- **Custom Environment Variables**: Uses `envDir` and `envPrefix` for flexible environment management
+- **Custom Vite Modes**: Easily run dev/build in custom modes (e.g., staging, testing)
+- **Redux Toolkit**: Modern state management for React applications
+- **Husky**: Git hooks for automated checks
+  - Pre-commit hook runs ESLint to ensure code quality before commits
+
+### Quick Start
+
+1. **Install dependencies**
+   ```bash
+   yarn install
+   ```
+2. **Run development server**
+   ```bash
+   yarn dev
+   ```
+3. **Run Storybook**
+   ```bash
+   yarn storybook
+   ```
+4. **Lint and format code**
+   ```bash
+   yarn lint
+   yarn lint:fix
+   ```
+5. **Custom modes**
+   ```bash
+   yarn dev -- --mode staging
+   yarn build -- --mode testing
+   ```
+
+### Environment Variables
+- All `.env` files are stored in the `/env` directory (see `vite.config.ts`)
+- Only variables prefixed with `VITE_` are exposed to the client
+- Supports custom modes: `.env.staging`, `.env.testing`, etc.
+
+### Routing Example
+- See `src/App.tsx` for React Router setup
+
+### Storybook Example
+- See `src/stories/` for example stories
+
+---
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
