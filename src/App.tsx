@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from './redux/store';
 import { useGetTodoQuery } from './redux/_example/example.api';
 import { decrement, double, fetchText, fetchValue, increment } from './redux/_example/example.slice';
+import { config } from './config';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from './context/app';
 
 function App() {
     const value = useSelector((state: RootState) => state.example.value);
@@ -14,6 +17,17 @@ function App() {
     const textLoading = useSelector((state: RootState) => state.example.textLoading);
     const dispatch = useDispatch<AppDispatch>();
     const { data: todo, isLoading: isTodoLoading } = useGetTodoQuery(1);
+    const { axios } = useContext(AppContext);
+
+    const [todos, setTodos] = useState<any[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get('/todos');
+            const data = response.data;
+            setTodos(data.slice(0, 10));
+        };
+        fetchData();
+    }, [axios]);
 
     return (
         <>
@@ -25,7 +39,7 @@ function App() {
                     <img src={reactLogo} className='logo react' alt='React logo' />
                 </a>
             </div>
-            <h1 className={clsx('header', 'header-italic')}>{import.meta.env.VITE_APP_NAME} + React</h1>
+            <h1 className={clsx('header', 'header-italic')}>{config.appName} + React</h1>
             <h1 className='text-3xl font-bold underline'>Hello World!</h1>
             <div style={{ marginTop: 20 }}>
                 <h3>Redux Example Value: {value}</h3>
@@ -40,13 +54,16 @@ function App() {
                     {loading ? 'Loading...' : 'Fetch Random Value'}
                 </button>
             </div>
-            <div style={{ marginTop: 20 }}>
-                <h3>Redux Example Text: {text}</h3>
+            <div className='flex justify-center items-center mb-8' style={{ marginTop: 20 }}>
                 <button onClick={() => dispatch(fetchText({ text: 'Hi' }))} disabled={textLoading}>
                     {textLoading ? 'Loading...' : 'Fetch Text'}
                 </button>
+                <h3>Redux Example Text: {text}</h3>
             </div>
             {isTodoLoading ? <div>Loading todo...</div> : <div>{todo?.title}</div>}
+            {todos.map((todo) => (
+                <div key={todo.id}>{todo.title}</div>
+            ))}
         </>
     );
 }

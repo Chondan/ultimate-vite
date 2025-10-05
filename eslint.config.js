@@ -51,6 +51,7 @@ export default defineConfig([
             "react/jsx-indent-props": ["error", 4],
             "prettier/prettier": "error",
             "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+            "@typescript-eslint/no-explicit-any": ["warn"],
         }
     },
 ]);
