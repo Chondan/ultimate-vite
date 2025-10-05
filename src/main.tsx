@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppContext, appContextValue } from './context/app.ts';
+import { ThemeProvider } from './components/theme-provider.tsx';
 
 const reactQueryClient = new QueryClient();
 
@@ -15,11 +16,13 @@ createRoot(document.getElementById('root')!).render(
         <AppContext.Provider value={appContextValue}>
             <QueryClientProvider client={reactQueryClient}>
                 <Provider store={store}>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path='/' element={<App />} />
-                        </Routes>
-                    </BrowserRouter>
+                    <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path='/' element={<App />} />
+                            </Routes>
+                        </BrowserRouter>
+                    </ThemeProvider>
                 </Provider>
             </QueryClientProvider>
         </AppContext.Provider>
