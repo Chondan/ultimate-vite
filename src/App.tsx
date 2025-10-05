@@ -18,6 +18,7 @@ function App() {
                 </a>
             </div>
             <h1 className={clsx('header', 'header-italic')}>{import.meta.env.VITE_APP_NAME} + React</h1>
+            <h1 className='text-3xl font-bold underline'>Hello World!</h1>
             <div className='card'>
                 <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
                 <p>
