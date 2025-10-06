@@ -1,49 +1,31 @@
 /* eslint-disable max-len */
-import { LogoIcon } from '@/components/logo';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { LogoIcon } from '@/components/Logo';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 import { useAuth } from '@/context/auth';
+import { sendEmailVerification } from 'firebase/auth';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-export function LoginPage() {
-    const { currentUser, isLoggedIn, login, loginWithGoogle, reload } = useAuth();
+export function SignupPage() {
     const [loading, setLoading] = useState(false);
+    const { currentUser, isLoggedIn, signup } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleGoogleLogin = useCallback(
-        async (e: React.FormEvent) => {
-            e.preventDefault();
-            try {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                await loginWithGoogle();
-                toast.success('Login successful!');
-            } catch (err: any) {
-                console.error(err);
-                toast.error(err.message);
-            }
-        },
-        [loginWithGoogle]
-    );
-
-    const handleLogin = useCallback(
+    const handleSignup = useCallback(
         async (e: React.FormEvent) => {
             e.preventDefault();
             try {
                 setLoading(true);
                 await new Promise((resolve) => setTimeout(resolve, 1000));
-                await login({ email, password });
-                await reload();
-
-                if (currentUser && !currentUser.emailVerified) {
-                    toast.error('Please check your email to verify');
-                } else {
-                    toast.success('Login successful!');
-                }
+                const { user } = await signup({ email, password });
+                await sendEmailVerification(user);
+                toast.success('Signup successful! Please check your email to verify');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 console.error(err);
                 toast.error(err.message);
@@ -51,10 +33,11 @@ export function LoginPage() {
                 setLoading(false);
             }
         },
-        [currentUser, email, login, password, reload]
+        [email, password, signup]
     );
 
     if (isLoggedIn) return <Navigate to='/app' />;
+    if (currentUser && !currentUser.emailVerified) return <Navigate to='/login' />;
 
     return (
         <section className='flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent'>
@@ -67,12 +50,12 @@ export function LoginPage() {
                         <Link to='/' aria-label='go home'>
                             <LogoIcon />
                         </Link>
-                        <h1 className='mb-1 mt-4 text-xl font-semibold'>Sign In to Tailark</h1>
-                        <p className='text-sm'>Welcome back! Sign in to continue</p>
+                        <h1 className='mb-1 mt-4 text-xl font-semibold'>Create a Tailark Account</h1>
+                        <p className='text-sm'>Welcome! Create an account to get started</p>
                     </div>
 
-                    <div className='mt-6 grid grid-cols-1 gap-3'>
-                        <Button type='button' variant='outline' onClick={handleGoogleLogin}>
+                    {/* <div className='mt-6 grid grid-cols-2 gap-3'>
+                        <Button type='button' variant='outline'>
                             <svg xmlns='http://www.w3.org/2000/svg' width='0.98em' height='1em' viewBox='0 0 256 262'>
                                 <path
                                     fill='#4285f4'
@@ -93,7 +76,7 @@ export function LoginPage() {
                             </svg>
                             <span>Google</span>
                         </Button>
-                        {/* <Button type='button' variant='outline'>
+                        <Button type='button' variant='outline'>
                             <svg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 256 256'>
                                 <path fill='#f1511b' d='M121.666 121.666H0V0h121.666z'></path>
                                 <path fill='#80cc28' d='M256 121.666H134.335V0H256z'></path>
@@ -101,12 +84,27 @@ export function LoginPage() {
                                 <path fill='#fbbc09' d='M256 256.002H134.335V134.336H256z'></path>
                             </svg>
                             <span>Microsoft</span>
-                        </Button> */}
-                    </div>
+                        </Button>
+                    </div> */}
 
                     <hr className='my-4 border-dashed' />
 
-                    <div className='space-y-6'>
+                    <div className='space-y-5'>
+                        {/* <div className='grid grid-cols-2 gap-3'>
+                            <div className='space-y-2'>
+                                <Label htmlFor='firstname' className='block text-sm'>
+                                    Firstname
+                                </Label>
+                                <Input type='text' required name='firstname' id='firstname' placeholder='John' />
+                            </div>
+                            <div className='space-y-2'>
+                                <Label htmlFor='lastname' className='block text-sm'>
+                                    Lastname
+                                </Label>
+                                <Input type='text' required name='lastname' id='lastname' placeholder='Doe' />
+                            </div>
+                        </div> */}
+
                         <div className='space-y-2'>
                             <Label htmlFor='email' className='block text-sm'>
                                 Username
@@ -122,17 +120,10 @@ export function LoginPage() {
                             />
                         </div>
 
-                        <div className='space-y-0.5'>
-                            <div className='flex items-center justify-between'>
-                                <Label htmlFor='pwd' className='text-sm'>
-                                    Password
-                                </Label>
-                                <Button asChild variant='link' size='sm'>
-                                    <Link to='/forgot-password' className='link intent-info variant-ghost text-sm'>
-                                        Forgot your Password ?
-                                    </Link>
-                                </Button>
-                            </div>
+                        <div className='space-y-2'>
+                            <Label htmlFor='pwd' className='text-sm'>
+                                Password
+                            </Label>
                             <Input
                                 type='password'
                                 required
@@ -144,17 +135,17 @@ export function LoginPage() {
                             />
                         </div>
 
-                        <Button className='w-full' onClick={handleLogin}>
-                            {loading ? <Loader2 className='size-4 animate-spin' /> : 'Sign In'}
+                        <Button className='w-full' onClick={handleSignup}>
+                            {loading ? <Loader2 className='size-4 animate-spin' /> : 'Continue'}
                         </Button>
                     </div>
                 </div>
 
                 <div className='bg-muted rounded-(--radius) border p-3'>
                     <p className='text-accent-foreground text-center text-sm'>
-                        Don&apos;t have an account ?
+                        Have an account ?
                         <Button asChild variant='link' className='px-2'>
-                            <Link to='/signup'>Create account</Link>
+                            <Link to='/login'>Sign In</Link>
                         </Button>
                     </p>
                 </div>

@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 import { Link } from 'react-router-dom';
-import { Logo } from '@/components/logo';
+import { Logo } from '@/components/Logo';
 import { LogOut, Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { useScroll } from 'motion/react';
-import { ModeToggle } from './mode-toggle';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/auth';
 
@@ -87,7 +87,7 @@ export const HeroHeader = () => {
                                 </ul>
                             </div>
                             <div className='flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit item-center'>
-                                <ModeToggle />
+                                <ThemeToggle />
                                 {isLoggedIn ? (
                                     <>
                                         <Button asChild variant='outline' size='sm'>

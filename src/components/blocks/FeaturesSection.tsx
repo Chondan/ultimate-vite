@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Settings2, Sparkles, Zap } from 'lucide-react';
 import { type ReactNode } from 'react';
 
-export default function Features() {
+export default function FeaturesSection() {
     return (
         <section className='bg-zinc-50 py-16 md:py-32 dark:bg-transparent'>
             <div className='@container mx-auto max-w-5xl px-6'>

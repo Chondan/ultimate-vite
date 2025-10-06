@@ -1,6 +1,6 @@
 import { getAxiosInstance } from '@src/config/axios';
 import { createContext } from 'react';
-import { config } from '../config';
+import { config } from '@/config';
 import { initializeFirebaseApp } from '@/config/firebase';
 
 const { auth, db, googleProvider } = initializeFirebaseApp();

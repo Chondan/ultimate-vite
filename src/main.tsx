@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppContext, appContextValue } from './context/app.ts';
-import { ThemeProvider } from './components/theme-provider.tsx';
+import { ThemeProvider } from './context/provider/ThemeProvider.tsx';
 import { AuthProvider } from './context/provider/AuthProvider.tsx';
 import { RoutesApp } from './Routes.tsx';
 import './index.css';

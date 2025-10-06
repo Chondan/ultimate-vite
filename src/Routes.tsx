@@ -1,14 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { SignupPage } from '@/components/sign-up.tsx';
-import { LoginPage } from '@/components/login.tsx';
-import { Workspace } from './pages/Workspace.tsx';
-import { Toaster } from 'sonner';
-import App from './App.tsx';
-import { useTheme } from './components/theme-provider.tsx';
-import { ForgotPasswordPage } from './components/forgot-password.tsx';
+import { SignupPage } from '@/pages/auth/SingupPage.tsx';
+import { LoginPage } from '@/pages/auth/LoginPage.tsx';
+import { AppPage } from './pages/AppPage.tsx';
+import App from './Landing.tsx';
+import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage.tsx';
+import { Toaster } from './components/ui/Toaster.tsx';
 
 export const RoutesApp = () => {
-    const { theme } = useTheme();
     return (
         <>
             <BrowserRouter>
@@ -17,10 +15,10 @@ export const RoutesApp = () => {
                     <Route path='/signup' element={<SignupPage />} />
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-                    <Route path='/app' element={<Workspace />} />
+                    <Route path='/app' element={<AppPage />} />
                 </Routes>
             </BrowserRouter>
-            <Toaster theme={theme === 'dark' ? 'light' : 'dark'} position='top-right' />
+            <Toaster position='top-right' />
         </>
     );
 };

@@ -11,7 +11,7 @@ import {
 } from 'firebase/auth';
 import { useContext, useEffect, useState, type FC } from 'react';
 import { AccessToken } from '@/utils/token';
-import { AppContext } from '../app';
+import { AppContext } from '@/context/app';
 import {
     AuthContext,
     type TSignup,

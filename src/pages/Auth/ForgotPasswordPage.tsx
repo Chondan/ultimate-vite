@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
-import { LogoIcon } from '@/components/logo';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { LogoIcon } from '@/components/Logo';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 import { useAuth } from '@/context/auth';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
@@ -22,6 +22,7 @@ export function ForgotPasswordPage() {
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 await sendEmailToResetPassword({ email });
                 toast.success('Email sent! Please check your email to reset your password');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 console.error(err);
                 toast.error(err.message);
