@@ -4,28 +4,57 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/auth';
+import { Loader2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export function LoginPage() {
-    const { currentUser, login } = useAuth();
+    const { currentUser, isLoggedIn, login, loginWithGoogle, reload } = useAuth();
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleGoogleLogin = useCallback(
+        async (e: React.FormEvent) => {
+            e.preventDefault();
+            try {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                await loginWithGoogle();
+                toast.success('Login successful!');
+            } catch (err: any) {
+                console.error(err);
+                toast.error(err.message);
+            }
+        },
+        [loginWithGoogle]
+    );
 
     const handleLogin = useCallback(
         async (e: React.FormEvent) => {
             e.preventDefault();
-            console.log('Signin... ', { email, password });
             try {
+                setLoading(true);
+                await new Promise((resolve) => setTimeout(resolve, 1000));
                 await login({ email, password });
-            } catch (err) {
+                await reload();
+
+                if (currentUser && !currentUser.emailVerified) {
+                    toast.error('Please check your email to verify');
+                } else {
+                    toast.success('Login successful!');
+                }
+            } catch (err: any) {
                 console.error(err);
+                toast.error(err.message);
+            } finally {
+                setLoading(false);
             }
         },
-        [email, login, password]
+        [currentUser, email, login, password, reload]
     );
 
-    if (currentUser) return <Navigate to='/app' />;
+    if (isLoggedIn) return <Navigate to='/app' />;
 
     return (
         <section className='flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent'>
@@ -42,8 +71,8 @@ export function LoginPage() {
                         <p className='text-sm'>Welcome back! Sign in to continue</p>
                     </div>
 
-                    <div className='mt-6 grid grid-cols-2 gap-3'>
-                        <Button type='button' variant='outline'>
+                    <div className='mt-6 grid grid-cols-1 gap-3'>
+                        <Button type='button' variant='outline' onClick={handleGoogleLogin}>
                             <svg xmlns='http://www.w3.org/2000/svg' width='0.98em' height='1em' viewBox='0 0 256 262'>
                                 <path
                                     fill='#4285f4'
@@ -64,7 +93,7 @@ export function LoginPage() {
                             </svg>
                             <span>Google</span>
                         </Button>
-                        <Button type='button' variant='outline'>
+                        {/* <Button type='button' variant='outline'>
                             <svg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 256 256'>
                                 <path fill='#f1511b' d='M121.666 121.666H0V0h121.666z'></path>
                                 <path fill='#80cc28' d='M256 121.666H134.335V0H256z'></path>
@@ -72,7 +101,7 @@ export function LoginPage() {
                                 <path fill='#fbbc09' d='M256 256.002H134.335V134.336H256z'></path>
                             </svg>
                             <span>Microsoft</span>
-                        </Button>
+                        </Button> */}
                     </div>
 
                     <hr className='my-4 border-dashed' />
@@ -99,7 +128,7 @@ export function LoginPage() {
                                     Password
                                 </Label>
                                 <Button asChild variant='link' size='sm'>
-                                    <Link to='#' className='link intent-info variant-ghost text-sm'>
+                                    <Link to='/forgot-password' className='link intent-info variant-ghost text-sm'>
                                         Forgot your Password ?
                                     </Link>
                                 </Button>
@@ -116,7 +145,7 @@ export function LoginPage() {
                         </div>
 
                         <Button className='w-full' onClick={handleLogin}>
-                            Sign In
+                            {loading ? <Loader2 className='size-4 animate-spin' /> : 'Sign In'}
                         </Button>
                     </div>
                 </div>

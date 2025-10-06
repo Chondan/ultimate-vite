@@ -4,28 +4,39 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/auth';
+import { sendEmailVerification } from 'firebase/auth';
+import { Loader2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export function SignupPage() {
-    const { currentUser, signup } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const { currentUser, isLoggedIn, signup } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSignup = useCallback(
         async (e: React.FormEvent) => {
             e.preventDefault();
-            console.log('Signup... ', { email, password });
             try {
-                await signup({ email, password });
-            } catch (err) {
+                setLoading(true);
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                const { user } = await signup({ email, password });
+                await sendEmailVerification(user);
+                toast.success('Signup successful! Please check your email to verify');
+            } catch (err: any) {
                 console.error(err);
+                toast.error(err.message);
+            } finally {
+                setLoading(false);
             }
         },
         [email, password, signup]
     );
 
-    if (currentUser) return <Navigate to='/app' />;
+    if (isLoggedIn) return <Navigate to='/app' />;
+    if (currentUser && !currentUser.emailVerified) return <Navigate to='/login' />;
 
     return (
         <section className='flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent'>
@@ -42,7 +53,7 @@ export function SignupPage() {
                         <p className='text-sm'>Welcome! Create an account to get started</p>
                     </div>
 
-                    <div className='mt-6 grid grid-cols-2 gap-3'>
+                    {/* <div className='mt-6 grid grid-cols-2 gap-3'>
                         <Button type='button' variant='outline'>
                             <svg xmlns='http://www.w3.org/2000/svg' width='0.98em' height='1em' viewBox='0 0 256 262'>
                                 <path
@@ -73,7 +84,7 @@ export function SignupPage() {
                             </svg>
                             <span>Microsoft</span>
                         </Button>
-                    </div>
+                    </div> */}
 
                     <hr className='my-4 border-dashed' />
 
@@ -124,7 +135,7 @@ export function SignupPage() {
                         </div>
 
                         <Button className='w-full' onClick={handleSignup}>
-                            Continue
+                            {loading ? <Loader2 className='size-4 animate-spin' /> : 'Continue'}
                         </Button>
                     </div>
                 </div>

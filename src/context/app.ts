@@ -3,7 +3,7 @@ import { createContext } from 'react';
 import { config } from '../config';
 import { initializeFirebaseApp } from '@/config/firebase';
 
-const { auth, db } = initializeFirebaseApp();
+const { auth, db, googleProvider } = initializeFirebaseApp();
 const axiosInstance = getAxiosInstance(config.backendBaseUrl as string, { auth });
 
 type AppContextType = {
@@ -11,6 +11,7 @@ type AppContextType = {
     firebase: {
         auth: typeof auth;
         db: typeof db;
+        googleProvider: typeof googleProvider;
     };
 };
 
@@ -19,6 +20,7 @@ export const appContextValue = {
     firebase: {
         auth,
         db,
+        googleProvider,
     },
 };
 

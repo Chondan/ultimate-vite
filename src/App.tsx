@@ -7,13 +7,13 @@ import FooterSection from './components/footer';
 
 function App() {
     return (
-        <main>
+        <>
             <HeroHeader />
             <HeroSection />
             <Features />
             <CallToAction />
             <FooterSection />
-        </main>
+        </>
     );
 }
 

@@ -17,7 +17,7 @@ const menuItems = [
 ];
 
 export const HeroHeader = () => {
-    const { currentUser, logout } = useAuth();
+    const { isLoggedIn, logout } = useAuth();
     const [menuState, setMenuState] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -88,7 +88,7 @@ export const HeroHeader = () => {
                             </div>
                             <div className='flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit item-center'>
                                 <ModeToggle />
-                                {currentUser ? (
+                                {isLoggedIn ? (
                                     <>
                                         <Button asChild variant='outline' size='sm'>
                                             <Link to='/app'>
