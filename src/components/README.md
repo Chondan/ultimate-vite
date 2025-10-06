@@ -1,10 +1,3 @@
-# Note on shadcn CLI File Detection
-
-The shadcn CLI checks for existing files in a **case-insensitive** way (e.g., `Button.tsx` and `button.tsx` are considered the same on macOS/Windows). If a file with the same name (regardless of case) exists in the `ui` folder, the CLI will prompt to overwrite or skip, preventing accidental overwrites of your custom components.
-
-**In short:**
-- The CLI ignores case when checking filenames.
-- This helps avoid overwriting your own components.
 
 # Components Usage Guide
 
@@ -34,6 +27,14 @@ After installing a component from shadcn/ui or Tailark, **rename the file and it
 **Why?**
 - Improves code consistency and readability.
 - Matches React’s convention for component names.
+
+### Note on shadcn CLI File Detection
+
+The shadcn CLI checks for existing files in a **case-insensitive** way (e.g., `Button.tsx` and `button.tsx` are considered the same on macOS/Windows). If a file with the same name (regardless of case) exists in the `ui` folder, the CLI will prompt to overwrite or skip, preventing accidental overwrites of your custom components.
+
+**In short:**
+- The CLI ignores case when checking filenames.
+- This helps avoid overwriting your own components.
 
 ## References
 
