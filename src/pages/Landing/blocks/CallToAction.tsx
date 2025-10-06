@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/Button';
 import { Link } from 'react-router-dom';
 
-export default function CallToAction() {
+export const CallToAction = () => {
     return (
         <section className='py-16 md:py-32'>
             <div className='mx-auto max-w-5xl px-6'>
@@ -26,4 +26,4 @@ export default function CallToAction() {
             </div>
         </section>
     );
-}
+};

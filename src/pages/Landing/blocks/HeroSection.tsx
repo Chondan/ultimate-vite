@@ -25,7 +25,7 @@ const transitionVariants = {
     },
 };
 
-export default function HeroSection() {
+export const HeroSection = () => {
     return (
         <>
             <main className='overflow-hidden'>
@@ -138,4 +138,4 @@ export default function HeroSection() {
             </main>
         </>
     );
-}
+};

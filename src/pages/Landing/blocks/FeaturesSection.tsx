@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Settings2, Sparkles, Zap } from 'lucide-react';
 import { type ReactNode } from 'react';
 
-export default function FeaturesSection() {
+export const FeaturesSection = () => {
     return (
         <section className='bg-zinc-50 py-16 md:py-32 dark:bg-transparent'>
             <div className='@container mx-auto max-w-5xl px-6'>
@@ -64,7 +64,7 @@ export default function FeaturesSection() {
             </div>
         </section>
     );
-}
+};
 
 const CardDecorator = ({ children }: { children: ReactNode }) => (
     <div className='mask-radial-from-40% mask-radial-to-60% relative mx-auto size-36 duration-200 [--color-border:color-mix(in_oklab,var(--color-zinc-950)10%,transparent)] group-hover:[--color-border:color-mix(in_oklab,var(--color-zinc-950)20%,transparent)] dark:[--color-border:color-mix(in_oklab,var(--color-white)15%,transparent)] dark:group-hover:[--color-border:color-mix(in_oklab,var(--color-white)20%,transparent)]'>
