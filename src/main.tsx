@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppContext, appContextValue } from './context/app.ts';
 import { ThemeProvider } from './context/provider/ThemeProvider.tsx';
 import { AuthProvider } from './context/provider/AuthProvider.tsx';
-import { RoutesApp } from './Routes.tsx';
+import { Routes } from './Routes.tsx';
 import './index.css';
 
 const reactQueryClient = new QueryClient();
@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
                 <Provider store={store}>
                     <AuthProvider>
                         <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
-                            <RoutesApp />
+                            <Routes />
                         </ThemeProvider>
                     </AuthProvider>
                 </Provider>

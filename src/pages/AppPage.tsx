@@ -1,9 +1,10 @@
-import { useAuth } from '@/context/auth';
-import { Navigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 export const AppPage = () => {
-    const { isLoggedIn } = useAuth();
-    if (!isLoggedIn) return <Navigate to='/' />;
-
-    return <div>AppPage</div>;
+    return (
+        <div>
+            <div>App Page</div>
+            <Outlet />
+        </div>
+    );
 };

@@ -6,11 +6,11 @@ import { Label } from '@/components/ui/Label';
 import { useAuth } from '@/context/auth';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 export function ForgotPasswordPage() {
-    const { currentUser, isLoggedIn, sendEmailToResetPassword } = useAuth();
+    const { sendEmailToResetPassword } = useAuth();
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
 
@@ -32,9 +32,6 @@ export function ForgotPasswordPage() {
         },
         [email, sendEmailToResetPassword]
     );
-
-    if (isLoggedIn) return <Navigate to='/app' />;
-    if (currentUser && !currentUser.emailVerified) return <Navigate to='/login' />;
 
     return (
         <section className='flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent'>

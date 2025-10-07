@@ -7,12 +7,12 @@ import { useAuth } from '@/context/auth';
 import { sendEmailVerification } from 'firebase/auth';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 export function SignupPage() {
     const [loading, setLoading] = useState(false);
-    const { currentUser, isLoggedIn, signup } = useAuth();
+    const { signup } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -35,9 +35,6 @@ export function SignupPage() {
         },
         [email, password, signup]
     );
-
-    if (isLoggedIn) return <Navigate to='/app' />;
-    if (currentUser && !currentUser.emailVerified) return <Navigate to='/login' />;
 
     return (
         <section className='flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent'>
