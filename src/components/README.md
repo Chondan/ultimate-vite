@@ -24,6 +24,16 @@ After installing a component from shadcn/ui or Tailark, **rename the file and it
 	```
 - Do the same for Tailark components (e.g., `card.tsx` → `Card.tsx`).
 
+
+You can do this manually, or automate the process by running a script [to-camelcase.sh](../../scripts/to-camelcase.sh). This helps keep naming consistent and saves time when renaming multiple files.
+```bash
+#
+$ sh ./to-camelcase.sh # By default, __dir=./ and __nested=false
+$ sh ./to-camelcase.sh --dir=./ --nested=true
+```
+
+..
+
 **Why?**
 - Improves code consistency and readability.
 - Matches React’s convention for component names.
