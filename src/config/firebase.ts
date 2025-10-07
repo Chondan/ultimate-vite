@@ -4,24 +4,6 @@ import { getAuth, connectAuthEmulator, GoogleAuthProvider } from 'firebase/auth'
 import { config } from '.';
 
 export const initializeFirebaseApp = () => {
-    const googleProvider = new GoogleAuthProvider();
-
-    if (config.environment === 'dev') {
-        console.log('Initializing firebase app with emulator...');
-        const firebaseApp = initializeApp({
-            apiKey: config.firebase.apiKey,
-            projectId: config.firebase.projectId,
-        });
-        const auth = getAuth(firebaseApp);
-        const db = getFirestore(firebaseApp);
-        const [fireStoreHost, fireStorePort] = config.firebase.firestoreDomain.split(':');
-        connectFirestoreEmulator(db, fireStoreHost, fireStorePort);
-        connectAuthEmulator(auth, config.firebase.authDomain);
-
-        return { auth, db, googleProvider };
-    }
-
-    console.log('Initializing firebase app...');
     const firebaseApp = initializeApp({
         apiKey: config.firebase.apiKey,
         projectId: config.firebase.projectId,
@@ -30,5 +12,13 @@ export const initializeFirebaseApp = () => {
     });
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
+    const googleProvider = new GoogleAuthProvider();
+
+    if (config.environment === 'dev') {
+        const [fireStoreHost, fireStorePort] = config.firebase.firestoreDomain.split(':');
+        connectFirestoreEmulator(db, fireStoreHost, fireStorePort);
+        connectAuthEmulator(auth, config.firebase.authDomain);
+    }
+
     return { auth, db, googleProvider };
 };
