@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/auth';
-import type { FC } from 'react';
+import { useMemo, type FC } from 'react';
 import type { TConditionalRender } from './plugins';
 
 interface IConditionalRender {
@@ -29,13 +29,16 @@ export const ConditionalRender: FC<IConditionalRender> = (props) => {
     const auth = useAuth();
 
     // Redirect at the first match
-    const firstRedirect = conditionalRenders.find(({ conditions }) => conditions.every((condition) => condition(auth)));
-    if (firstRedirect)
-        return firstRedirect.redirectTo ? (
-            <Navigate to={firstRedirect.redirectTo} state={{ from: location }} replace />
-        ) : (
-            firstRedirect.fallbackElement
-        );
+    const firstConditionalRenderMatched = useMemo(
+        () => conditionalRenders.find(({ conditions }) => conditions.every((condition) => condition(auth))),
+        [auth, conditionalRenders]
+    );
 
-    return children;
+    if (!firstConditionalRenderMatched) return children;
+
+    return firstConditionalRenderMatched.redirectTo ? (
+        <Navigate to={firstConditionalRenderMatched.redirectTo} state={{ from: location }} replace />
+    ) : (
+        firstConditionalRenderMatched.fallbackElement
+    );
 };
