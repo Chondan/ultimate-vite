@@ -1,15 +1,16 @@
+import { AccessToken } from '@/utils/token';
 import axios from 'axios';
+import type { Auth } from 'firebase/auth';
 
-export const getAxiosInstance = (baseURL: string) => {
+export const getAxiosInstance = (baseURL: string, { auth }: { auth: Auth }) => {
     const axiosInstance = axios.create({
         baseURL: baseURL,
     });
 
     axiosInstance.interceptors.request.use(async (config) => {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+        const token = await AccessToken.getBearerToken(auth);
+        config.headers.Authorization = token;
+
         return config;
     });
 

@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import path, { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 // https://vite.dev/config/
 import { fileURLToPath } from 'node:url';
@@ -15,6 +16,7 @@ export default defineConfig({
     envPrefix: 'VITE_',
     resolve: {
         alias: {
+            '@': path.resolve(__dirname, './src'),
             '@src': path.resolve(__dirname, './src'),
         },
     },
@@ -25,6 +27,7 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
+        ViteImageOptimizer(),
     ],
     test: {
         projects: [
