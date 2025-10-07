@@ -27,7 +27,6 @@ export const ConditionalRender: FC<IConditionalRender> = (props) => {
     const { children, conditionalRenders = [] } = props;
     const location = useLocation();
     const auth = useAuth();
-    console.log({ user: auth.currentUser });
 
     // Redirect at the first match
     const firstRedirect = conditionalRenders.find(({ conditions }) => conditions.every((condition) => condition(auth)));
